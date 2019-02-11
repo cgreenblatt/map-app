@@ -1,9 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types';
 import './App.css'
-import Sidebar from './Sidebar'
-import Map from './Map'
-import Header from './Header'
 import * as mapHelper from './GoogleMapsHelper'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
@@ -84,6 +81,13 @@ class Place extends Component {
       </li>
       )
   }
+}
+
+Place.propTypes = {
+  place: PropTypes.object.isRequired,
+  hideSidebar: PropTypes.func.isRequired,
+  showTopbar: PropTypes.func.isRequired,
+  lastPlace: PropTypes.bool.isRequired
 }
 
 export default Place;

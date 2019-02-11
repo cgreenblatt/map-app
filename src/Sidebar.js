@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Place from './Place'
-import * as mapHelper from './GoogleMapsHelper'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 
@@ -16,9 +15,6 @@ class Sidebar extends React.Component {
     this.focusTextInput = this.focusTextInput.bind(this)
     this.handleKeyDown = this.handleKeyDown.bind(this)
     this.handleMapBoundsChange = this.handleMapBoundsChange.bind(this)
-    //mapHelper.registerCallback(this.handleMapBoundsChange)
-    //mapHelper.attachBoundsHandler(this.handleMapBoundsChange)
-    //this.state = {boundsChange: false}
     this.handleKeyDownUL = this.handleKeyDownUL.bind(this)
   }
 
@@ -51,8 +47,7 @@ class Sidebar extends React.Component {
 
 
   render() {
-    const {places, classes, hideSidebar, showTopbar, updateQuery, query, isLastShowingPlace} = this.props
-    let placeIndexes = places.map(place => place.index)
+    const {places, classes, hideSidebar, showTopbar, updateQuery, query, totalPlacesCnt} = this.props
     let role = window.innerWidth < 600 ? "alert" : ""
     return (
       <section role={role} className={classes} >
@@ -72,11 +67,11 @@ class Sidebar extends React.Component {
           role="search"
           ref={this.textInput}
           type="text"
-          placeholder="search for winery by name"
+          placeholder="search by name"
           value={query}
           onChange={(event) => updateQuery(event.target.value)}
         />
-        <div className='sidebar-search-cnt'>{this.props.places.length} of {this.props.totalPlacesCnt}</div>
+        <div className='sidebar-search-cnt'>{this.props.places.length} of {totalPlacesCnt}</div>
 
         <ul
           className="sidebar-places-list"
@@ -95,11 +90,21 @@ class Sidebar extends React.Component {
         </ul>
         </div>
         {(window.innerWidth < 600) && <footer className="google-attribution">
-          <img src="./powered_by_google_on_white.png" alt="powered by google image" className="image-google"></img>
+          <img src="./powered_by_google_on_white.png" alt="powered by google" className="image-google"></img>
         </footer>}
       </section>
     )
   }
+}
+
+Sidebar.propTypes = {
+  places: PropTypes.array.isRequired,
+  classes: PropTypes.string.isRequired,
+  hideSidebar: PropTypes.func.isRequired,
+  showTopbar: PropTypes.func.isRequired,
+  updateQuery: PropTypes.func.isRequired,
+  query: PropTypes.string.isRequired,
+  totalPlacesCnt: PropTypes.number.isRequired
 }
 
 export default Sidebar

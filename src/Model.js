@@ -17,10 +17,6 @@ let params = {
   "categoryId": "4bf58dd8d48988d14b941735"
 }
 
-let params2 = {
-  "venue_id": "4d320c8098336dcbfd411ff0"
-}
-
 function getFoursquareData(googlePlaces, location) {
   // TODO fix params -
     return foursquare.venues.getVenues(params).then(foursquarePlaces => {

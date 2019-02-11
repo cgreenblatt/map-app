@@ -64,7 +64,7 @@ main {
 
 .sidebar-search-cnt {
   padding: 10px;
-  margin: 20px 35%;
+  margin: 20px 30%;
   background-color: #e6e6e6;
   border-radius: 3px;
 }
@@ -172,7 +172,6 @@ input[type=text] {
   background-repeat: no-repeat;
   text-align: left;
   width: 100%;
-  padding-right: 40px;
   font-size: 1em;
   background-color: #e6e6e6;
   border: 0;
@@ -372,16 +371,14 @@ input::placeholder {
   font-size: 1.1em;
 }
 
-.details-hours-row {
-  padding: 5px 0;
-  font-size: .9em;
-  text-align: left;
+.details-hours {
+  padding-bottom: 20px;
 }
 
-.details-hours {
-  margin-top: 5px;
-  margin-bottom: 25px;
-  padding-left: 10px;
+.details-hours-row {
+  font-size: .9em;
+  text-align: left;
+  padding: 10px 10px 0;
 }
 
 .details-website {
@@ -398,6 +395,7 @@ input::placeholder {
 
 .details-foursquare {
   text-align: left;
+  margin-top: 20px;
 }
 
 .details-foursquare-grid {
@@ -426,14 +424,19 @@ input::placeholder {
 }
 
 .details-foursquare-icon {
-  padding: 5px 10px;
+  padding: 0 0 10px 10px;
   align-self: center;
   justify-self: start;
 }
 
 .details-foursquare-data {
-  justify-self: left;
-  padding: 5px 0;
+  justify-self: start;
+  padding-bottom: 10px;
+}
+
+.details-foursquare-data:first-of-type,
+.details-foursquare-icon:first-of-type {
+  padding-top: 10px;
 }
 
 .details-foursquare div {
@@ -505,7 +508,7 @@ input::placeholder {
     height: 80px;
     z-index: 20;
     opacity: 1;
-    grid-template-columns: 10fr 1fr 1fr;
+    grid-template-columns: 9fr 1fr;
   }
 
   .topbar-h2 {
@@ -520,6 +523,10 @@ input::placeholder {
 
   .details {
     width: 60%;
+  }
+
+  .details-addr-phone {
+    font-size: 1.3em;
   }
 
   .places-list {
@@ -540,7 +547,7 @@ input::placeholder {
   }
 
   .topbar {
-    grid-template-columns: 16fr 1fr 1fr;
+    grid-template-columns: 16fr 1fr;
 
   }
 
@@ -554,7 +561,7 @@ input::placeholder {
   }
 
   .details-website a {
-    font-size: 1.2em;
+    font-size: .9em;
   }
 
 }

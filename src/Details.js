@@ -1,6 +1,5 @@
-import React, { Component } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
-import * as mapHelper from './GoogleMapsHelper'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 
@@ -59,7 +58,7 @@ class Details extends React.Component {
           {place.details[0].opening_hours && place.details[0].opening_hours.weekday_text &&
           <section aria-label={place.name + " operating hours"} className="details-hours" tabIndex="0">
             {place.details[0].opening_hours.weekday_text.map((wd,index) =>
-              <div className="details-hours" key={index} className="details-hours-row">
+              <div key={index} className="details-hours-row">
                 {wd}
               </div>
             )}
@@ -90,11 +89,16 @@ class Details extends React.Component {
             </div>
 
             <footer className="google-attribution">
-              <img src="./powered_by_google_on_white.png" alt="powered by google image" className="image-google"></img>
+              <img src="./powered_by_google_on_white.png" alt="powered by google" className="image-google"></img>
             </footer>
         </section>
     )
   }
+}
+
+Details.propTypes = {
+  place: PropTypes.object.isRequired,
+  hideDetails: PropTypes.func.isRequired
 }
 
 export default Details

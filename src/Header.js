@@ -7,7 +7,6 @@ class Header extends React.Component {
   constructor(props) {
     super(props)
     this.handleKeyDown = this.handleKeyDown.bind(this)
-    this.menuIconDiv = React.createRef()
   }
 
   handleKeyDown(e) {
@@ -32,6 +31,11 @@ class Header extends React.Component {
       </header>
     )
   }
-
 }
+
+Header.propTypes = {
+  showSidebar: PropTypes.func.isRequired,
+  renderMenuButton: PropTypes.bool
+}
+
 export default Header

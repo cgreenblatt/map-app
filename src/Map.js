@@ -2,17 +2,23 @@ import React from 'react'
 import PropTypes from 'prop-types';
 import * as mapHelper from './GoogleMapsHelper'
 
-class Map extends React.Component {
+const Map = (props) => {
 
-  constructor(props) {
-    super(props)
-  }
+  mapHelper.handleMarkers(props.allPlaces, props.showingPlaces)
+  return (
+    <section
+      role='application'
+      aria-label='google map of the los gatos and santa cruz mountains'
+      id='map'
+      className={props.classes}
+      tabIndex="0">
+    </section> )
+}
 
-
-  render() {
-    mapHelper.handleMarkers(this.props.allPlaces, this.props.showingPlaces)
-    return <section role='application' aria-label='google map of the los gatos and santa cruz mountains' id='map' className={this.props.classes} tabIndex="0"></section>
-  }
+Map.propTypes = {
+  classes: PropTypes.string.isRequired,
+  allPlaces: PropTypes.array.isRequired,
+  showingPlaces: PropTypes.array.isRequired
 }
 
 export default Map

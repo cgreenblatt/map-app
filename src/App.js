@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import PropTypes from 'prop-types'
 import './App.css'
 import Sidebar from './Sidebar'
 import Map from './Map'
@@ -8,11 +7,9 @@ import Topbar from './Topbar'
 import Details from './Details'
 import * as mapHelper from './GoogleMapsHelper'
 import escapeRegExp from 'escape-string-regexp'
-import sortBy from 'sort-by'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { fas } from '@fortawesome/free-solid-svg-icons'
 import { fab } from '@fortawesome/free-brands-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 
 library.add(fas, fab)

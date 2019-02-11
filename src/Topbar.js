@@ -1,6 +1,5 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import * as mapHelper from './GoogleMapsHelper'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 class Topbar extends React.Component {
@@ -40,7 +39,7 @@ class Topbar extends React.Component {
               <FontAwesomeIcon icon={this.props.icon} />
             </button>
             <button id="topbar-close-icon"
-              aria-label={"remove details" + " for " + this.props.place.name}
+              aria-label={`remove details for ${this.props.place.name}`}
               className="icon-container"
               tabIndex="0"
               onKeyDown={this.closeKeyDownHandler}
@@ -51,7 +50,15 @@ class Topbar extends React.Component {
         </section>
     )
   }
+}
 
+Topbar.propTypes = {
+  place: PropTypes.object.isRequired,
+  classes: PropTypes.string.isRequired,
+  chevronClickHandler: PropTypes.func.isRequired,
+  closeClickHandler: PropTypes.func.isRequired,
+  icon: PropTypes.array.isRequired,
+  iconAriaLabel: PropTypes.string.isRequired
 }
 
 export default Topbar
