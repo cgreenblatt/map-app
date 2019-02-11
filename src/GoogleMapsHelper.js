@@ -858,7 +858,6 @@ function defineMarkerOverlayClass(hideTopbar, showTopbar, map) {
 
   MarkerOverlay.prototype.changeToWhite = function() {
     this.markerImg.setAttribute('src', 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|ffffff');
-
   }
 
   /** Stops clicks/drags from bubbling up to the map. */

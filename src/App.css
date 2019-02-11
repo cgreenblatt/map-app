@@ -4,7 +4,7 @@
   margin: 0;
   text-align: center;
   font-family: 'Lato', sans-serif;
-  color: #403E3C;
+  color: #4d4d4d;
 }
 
 *:focus {
@@ -15,6 +15,15 @@ body {
  height: 100vh;
  overflow-y: hidden;
 }
+
+.google-attribution {
+  width: 100%;
+  height: 40px;
+  padding: 10px 0;
+  position: absolute;
+  bottom: 0;
+}
+
 
 .app {
   height: 100vh;
@@ -30,12 +39,10 @@ main {
   position: absolute;
   top: 80px;
   left: 0;
-  overflow-y: auto;
   width: 0;
   height: 0;
   z-index: 0;
   opacity: 0;
-  border-right: 2px solid;
 }
 
 .sidebar-show {
@@ -46,22 +53,30 @@ main {
   background-color: white;
 }
 
+.sidebar-content {
+  height: calc(100% - 40px);
+  overflow-y: scroll;
+}
+
 .sidebar-top-grid {
   width: 100%;
 }
 
 .sidebar-search-cnt {
+  padding: 10px;
+  margin: 20px 35%;
   background-color: #e6e6e6;
-  padding: 20px 0;
+  border-radius: 3px;
 }
 
 .sidebar-places-list {
-  margin: 10px;
-  /*height: calc(100% - 100px);*/
-
+  padding: 5px 20px 10px;
+  overflow-y: scroll;
+  height: 100%;
 }
 
 .place {
+  width: 100%;
   display: grid;
   grid-template-columns: 12fr 1fr 1fr;
   grid-template-rows: 1fr 1fr;
@@ -76,8 +91,6 @@ main {
 .place:hover,
 .place:focus {
   text-decoration: underline;
-  border-top: 1px solid;
-  border-bottom: 1px solid;
 }
 
 .place-name {
@@ -91,6 +104,7 @@ main {
   grid-row-start: 1;
   grid-row-end: 3;
   letter-spacing: 1px;
+  color: black;
 }
 
 .place-icon {
@@ -101,16 +115,15 @@ main {
   grid-row-end: 3;
 }
 
-#place-icon-google {
+.place-icon-google {
   grid-column-start: 2;
   grid-column-end: 3;
 }
 
-#place-icon-foursquare {
+.place-icon-foursquare {
   font-size: .92em;
   grid-column-start: 3;
   grid-column-end: 4;
-
 }
 
 h2 {
@@ -127,7 +140,7 @@ h3 {
 
 .sidebar-top-grid {
   display: grid;
-  grid-template-columns: 10fr 1fr;
+  grid-template-columns: auto 50px;
   grid-template-rows: 1;
 }
 
@@ -143,6 +156,7 @@ h3 {
   height: calc(100vh - 100px);
   width: calc(100% - 20px);
   margin: 10px;
+  z-index: 1;
 }
 
 .map-reduced-height {
@@ -151,19 +165,23 @@ h3 {
 }
 
 input[type=text] {
-  padding: 8px;
+  padding: 10px 5px;
   background-color: white;
   background-image: url('icons/search.svg');
   background-position: right;
   background-repeat: no-repeat;
   text-align: left;
-  padding-right: 40px;
   width: 100%;
+  padding-right: 40px;
+  font-size: 1em;
+  background-color: #e6e6e6;
+  border: 0;
 }
 
 input::placeholder {
   font-size: 1em;
   text-align: center;
+  padding-left: 10px;
 }
 
 .menu-icon {
@@ -198,6 +216,7 @@ input::placeholder {
   grid-row-start: 2;
   grid-row-end: 3;
   padding-bottom: 5px;
+  color: black;
 }
 
 .heading-h2 {
@@ -258,7 +277,6 @@ input::placeholder {
   grid-template-columns: auto 95px;
   overflow-x: hidden;
   background-color: #e6e6e6;
-  /*background-color: #e2d9cf;*/
   z-index: 0;
   opacity: 0;
   border-bottom: 3px solid;
@@ -311,12 +329,16 @@ input::placeholder {
   top: 160px;
   right: 0;
   height: calc(100vh - 160px);
-  width: calc(100% - 20px);
+  width: 100%;
   z-index: 10;
   background-color: white;
-  overflow-y: auto;
-  margin: 10px;
+}
+
+.details-content-container {
+  height: calc(100% - 50px);
+  width: 100%;
   padding: 10px;
+  overflow-y: auto;
 }
 
 .details-figure {
@@ -346,8 +368,7 @@ input::placeholder {
 }
 
 .details-addr-phone {
-  padding: 20px;
-  border-bottom: 1px solid;
+  padding: 20px 0;
   font-size: 1.1em;
 }
 
@@ -358,12 +379,15 @@ input::placeholder {
 }
 
 .details-hours {
-  margin: 20px 0;
+  margin-top: 5px;
+  margin-bottom: 25px;
+  padding-left: 10px;
 }
 
 .details-website {
-  padding: 20px 0;
-  border-top: 1px solid;
+  margin-top: 20px;
+  padding: 5px 0;
+  background-color: #e6e6e6;
 }
 
 .details-website a {
@@ -373,7 +397,6 @@ input::placeholder {
 }
 
 .details-foursquare {
-  padding: 0 0 20px;
   text-align: left;
 }
 
@@ -381,13 +404,20 @@ input::placeholder {
   display: grid;
   grid-template-rows: 3;
   grid-template-columns: 45px  calc(100% - 45px);
+  background-color: #E6e6e6;
 }
 
-.details-foursquare h3 {
-  background-color: #E6e6e6;
-  padding: 10px 0;
-  font-size: 1em;
-  margin-bottom: 20px;
+.foursquare-heading {
+  grid-column-start: 1;
+  grid-column-end: 3;
+  align-self: center;
+  background-color: white;
+}
+
+.foursquare-attribution {
+  width: 100%;
+  max-width: 240px;
+  margin: 0 10px;
 }
 
 .details-foursquare a
@@ -449,13 +479,19 @@ input::placeholder {
     left: 0;
     height: 100vh;
     z-index: 20;
-    overflow-y: auto;
+/*    overflow-y: auto;*/
     width: 40%;
     opacity: 1;
+    border-right: 2px solid;
   }
 
   .sidebar-top-grid {
     height: 0;
+  }
+
+  .sidebar-content {
+    height: 100%;
+/*    overflow-y: auto; */
   }
 
   #sidebar-close-icon {
@@ -483,11 +519,11 @@ input::placeholder {
   }
 
   .details {
-    width: calc(60% - 20px);
+    width: 60%;
   }
 
   .places-list {
-    margin: 10px;
+    margin: 0 10px;
   }
 
 }

@@ -1,6 +1,6 @@
 'use strict';
 
-let cacheName = 'wine-v20';
+let cacheName = 'wine-v2';
 
 /*
  * On install event, cache known needed resources during install event

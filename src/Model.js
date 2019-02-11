@@ -66,14 +66,13 @@ function getGoogleDetailsPromise(place, service) {
     function callback(details, status) {
       // TODO google reference - howto deal with it
       if (status === window.google.maps.places.PlacesServiceStatus.OK) {
-        place.googleDetails = details
         resolve(details)
       } else {
         reject("Unable to get details")
       }
     }
     service.getDetails({"placeId": place.place_id, fields: ['name', 'rating', 'formatted_phone_number', 'opening_hours',
-  'review', 'photo', 'website']}, callback)
+  'review', 'photos', 'website']}, callback)
   })
 }
 

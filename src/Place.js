@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types';
 import './App.css'
 import Sidebar from './Sidebar'
 import Map from './Map'
@@ -78,8 +79,8 @@ class Place extends Component {
           onMouseLeave={this.handleMouseLeave}
           tabIndex="0">
         <div className='place-name'>{place.name}</div>
-        <div className='place-icon' id='place-icon-google'><FontAwesomeIcon icon={['fab', 'google']} /></div>
-        {place.foursquare && <span className='place-icon' id='place-icon-foursquare'><FontAwesomeIcon icon={['fab', 'foursquare']} /></span>}
+        <div className='place-icon place-icon-google'><FontAwesomeIcon icon={['fab', 'google']} /></div>
+        {place.foursquare && <span className='place-icon place-icon-foursquare'><FontAwesomeIcon icon={['fab', 'foursquare']} /></span>}
       </li>
       )
   }

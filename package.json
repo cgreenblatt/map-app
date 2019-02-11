@@ -8,6 +8,7 @@
     "@fortawesome/free-solid-svg-icons": "^5.7.1",
     "@fortawesome/react-fontawesome": "^0.1.4",
     "escape-string-regexp": "^1.0.5",
+    "prop-types": "^15.6.2",
     "react": "^16.8.1",
     "react-dom": "^16.8.1",
     "react-foursquare": "^1.0.3",

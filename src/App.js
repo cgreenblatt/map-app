@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import './App.css'
 import Sidebar from './Sidebar'
 import Map from './Map'
@@ -71,6 +72,7 @@ class App extends Component {
   showSidebar() {
     if (!this.state.sidebarClassList.includes('sidebar-show')) {
       this.setState({
+        renderSidebar: true,
         sidebarClassList: this.state.sidebarClassList.concat(['sidebar-show']),
         renderMenuButton: false,
       })

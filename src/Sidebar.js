@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Place from './Place'
 import * as mapHelper from './GoogleMapsHelper'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -55,6 +56,7 @@ class Sidebar extends React.Component {
     let role = window.innerWidth < 600 ? "alert" : ""
     return (
       <section role={role} className={classes} >
+        <div className="sidebar-content">
         <div className='sidebar-top-grid'>
           <button
             aria-label="close the winery search section"
@@ -70,14 +72,16 @@ class Sidebar extends React.Component {
           role="search"
           ref={this.textInput}
           type="text"
-          placeholder="search for winery by winery name"
+          placeholder="search for winery by name"
           value={query}
           onChange={(event) => updateQuery(event.target.value)}
         />
-        <div className='sidebar-search-cnt'>{this.props.places.length} of {this.props.totalPlacesCnt} wineries found</div>
+        <div className='sidebar-search-cnt'>{this.props.places.length} of {this.props.totalPlacesCnt}</div>
+
         <ul
           className="sidebar-places-list"
           onKeyDown={this.handleKeyDownUL}>
+
           { places.map(function(place, index) {
               return <Place
                 key={index}
@@ -89,6 +93,10 @@ class Sidebar extends React.Component {
             })
           }
         </ul>
+        </div>
+        {(window.innerWidth < 600) && <footer className="google-attribution">
+          <img src="./powered_by_google_on_white.png" alt="powered by google image" className="image-google"></img>
+        </footer>}
       </section>
     )
   }

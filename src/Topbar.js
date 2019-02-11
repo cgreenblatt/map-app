@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import * as mapHelper from './GoogleMapsHelper'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
@@ -26,7 +27,7 @@ class Topbar extends React.Component {
 
   render() {
     return (
-        <nav role="alert" className={this.props.classes}>
+        <section role="alert" className={this.props.classes}>
           <h2 className="topbar-h2">{this.props.place.name}</h2>
           <div className="topbar-button-container">
             <button
@@ -47,7 +48,7 @@ class Topbar extends React.Component {
               <FontAwesomeIcon icon={['fas', 'times']} />
             </button>
           </div>
-        </nav>
+        </section>
     )
   }
 
