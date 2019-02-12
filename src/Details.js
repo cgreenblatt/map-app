@@ -9,7 +9,7 @@ const Details = function(props) {
   let place = props.place
 
   return (
-    <section role='alert' className='details' >
+    <section aria-live='polite' className='details' >
       <div className='details-content-container'>
         {place.photos[0] && <DetailsImage place={place} />}
         <DetailsAddrPhoneWeb place={place}/>
