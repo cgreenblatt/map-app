@@ -1,4 +1,65 @@
+# Winery Map application
+
+## Table of Contents
+
+* [Intro](#intro)
+* [Downloading](#downloading)
+* [Running](#running)
+* [Instructions](#instructions)
+* [Contributing](#contributing)
+* [Details](#details)
+
+## Intro
+
+This is a map application for Wineries in the Los Gatos and Santa Cruz Mountains area.
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
+## Downloading
+
+To download this application, enter the following command on the command line in the directory
+where you would like to install it:
+
+git clone []
+
+After the above command completes, change your directory to the [] and run the
+following command on the command line:
+
+npm install
+
+## Running
+To run the application enter the following command on the command line in the []
+directory
+
+## Instructions
+
+All clickable screen areas can be reached via the tab key and can be activated
+by pressing the enter key, including map markers.
+
+All wineries are displayed initially on the map.  A larger screen will also
+display the side bar.  A smaller screen will display a menu icon that when
+clicked will display the sidebar.  Smaller screens will also have a close button
+to close the sidebar to return to the map.
+
+The sidebar contains a search field, a count of wineries in the list below,
+and a list of wineries located within the current bounds of the map that satisfy
+any search criteria.  All wineries match an empty search field.  Hovering on a
+winery in the list will cause the associated map marker to turn red.  Clicking
+on a winery in the list will cause the associated map marker to turn red for
+three seconds, an info window to display near the map marker, and will display
+the top bar with buttons for either expanding the winery details or removing
+the top bar.
+
+Hovering over a map marker causes the name of the winery to be displayed next to
+the map marker.  Clicking on a map marker causes the top bar to be displayed.
+The top bar provides access to the winery details.  Once the top bar is displayed,
+clicking on the down chevron button of the top bar expands the winery details or
+clicking on the close button the removes the top bar.  
+
+Clicking on either the google map zoom buttons will filter the
+winery list in the side bar to contain the wineries within the
+current map boundaries that satisfy any specified search criteria.
+
+
 
 ## Available Scripts
 
@@ -11,58 +72,3 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 The page will reload if you make edits.<br>
 You will also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify

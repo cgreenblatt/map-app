@@ -1,6 +1,5 @@
 import * as model from './Model'
 
-
 let map;
 let google;
 let service;
@@ -11,27 +10,25 @@ let markers;
 let googleMaps;
 let boundsCallback;
 
-
-export function changeMarkerToRed(place) {
-  markers[place.index].changeToRed();
-}
-
-const uluru = {lat: 37.1093391, lng: -121.930481};
-
-
+/**
+* @description Filters places within the map's bounds
+* @param {array} places - All places
+* @return {array} Places within the map's bounds
+*/
 export function getPlacesInBounds(places) {
-
-    if (!map) return [];
-    let bounds = map.getBounds();
-    let tempPlaces = places.filter(place => bounds.contains(place.geometry.location));
-    return tempPlaces;
-
+  if (!map) return [];
+  let bounds = map.getBounds();
+  return places.filter(place => bounds.contains(place.geometry.location));
 }
 
+/**
+* @description Loads google maps API
+* @return {object} A promise that resolves with google maps
+* https://stackoverflow.com/questions/48493960/using-google-map-in-react-component
+*/
 export function getGoogleMapsPromise() {
-
   if (!googleMapsPromise) {
-    googleMapsPromise = new Promise((resolve, reject) => {
+    googleMapsPromise = new Promise(resolve => {
     // Create a new function to call resolve
       window.resolveGoogleMapsPromise = () => {
         // Resolve the promise
@@ -39,12 +36,11 @@ export function getGoogleMapsPromise() {
       }
     });
 
-    // start load of google maps api    // Load the Google Maps API
+    // start load of google maps api
     const script = document.createElement('script');
     const API = 'AIzaSyABZfonyfQfBxa63C2F-1T2P_yvmt9pbzE';
     script.src = `https://maps.googleapis.com/maps/api/js?key=${API}&libraries=geometry,places&callback=resolveGoogleMapsPromise`;
     script.async = true;
-    //script.addEventListener('error', e => {console.log("now we have an error")})
     document.body.appendChild(script);
   }
 
@@ -52,14 +48,27 @@ export function getGoogleMapsPromise() {
   return googleMapsPromise;
 }
 
+/**
+* @description Stores reference to a callback for map bounds change event
+* @param {function} callback - Function to be called when a bounds change event occurs
+*/
 export function registerCallback(callback) {
   boundsCallback = callback;
 }
 
+/**
+* @description Gets google and foursquare details for a place
+* @param {object} place - Get details for this place
+* @return {object} A promise that resolves with the place with details
+*/
 export function getDetails(place) {
     return model.getPlaceDetails(place, service)
 }
 
+/**
+* @description Puts place data in google maps infowindow
+* @param {object} place - Infowindow populated with this place's data
+*/
 export function populateInfoWindow(place) {
   let nameStr = `<h2 id="info-window-title">${place.name}</h2>`;
   let addrStr = '';
@@ -77,10 +86,17 @@ export function populateInfoWindow(place) {
   infoWindow.open(map);
 } // end populateInfoWindow
 
+/**
+* @description Closes the google maps infowindow
+*/
 export function closeInfoWindow() {
   infoWindow.close();
 }
 
+/**
+* @description Extends the google map to include the places
+* @param {array} places - Extend google map to include these places
+*/
 function setMapBounds(places) {
   let bounds = new google.maps.LatLngBounds();
   places.forEach(place => {
@@ -89,6 +105,11 @@ function setMapBounds(places) {
   map.fitBounds(bounds);
 }
 
+/**
+* @description Gets the google maps API and initializes the map, service,
+* and infowindow objects
+* @return {object} A promise that resolves to the google maps api
+*/
 function getGoogleMaps() {
   if (googleMaps) {
     Promise.resolve(googleMaps);
@@ -112,19 +133,31 @@ function getGoogleMaps() {
   }
 }
 
+/**
+* @description Gets the google places, creates the google map marker
+* custom overlays, sets the map's bounds, and returns the places
+* @param {function} hideTopbar - a function to hide the topbar React component
+* @param {function} showTopbar - a function to show the topbar React component
+* @return {array} An array of places
+*/
 export function getGoogleMapsPlaces(hideTopbar, showTopbar) {
-        return getGoogleMaps().then(() => {
-          defineMarkerOverlayClass(hideTopbar, showTopbar, map);
-          return model.initializeData2(service, uluru).then(function(places) {
-            createMarkers(places, infoWindow);
-            setMapBounds(places);
-            return {places: places};
-          });
-        });
+  return getGoogleMaps().then(() => {
+    defineMarkerOverlayClass(hideTopbar, showTopbar, map);
+    return model.initializeData(service).then(function(places) {
+      createMarkers(places, infoWindow);
+      setMapBounds(places);
+      return {places: places};
+    });
+  });
 }
 
+/**
+* @description Creates a custom marker overlay for each marker and stores
+all markers in the marker array
+* @param {array} places - Markers are created for these places
+* @param {object} infoWindow - infowindow that displays place data
+*/
 function createMarkers(places, infoWindow) {
-
   // create overlay markers
   markers = places.map(place => {
     let marker = new MarkerOverlay(place, infoWindow);
@@ -133,14 +166,35 @@ function createMarkers(places, infoWindow) {
   })
 }
 
-export function animateMarker(place) {
-  markers[place.index].animate();
+/**
+* @description Changes a marker's color from white to red
+* @param {object} place - Change this place's marker color
+*/
+export function changeMarkerColor(place) {
+  markers[place.index].changeColor();
 }
 
+/**
+* @description Changes map marker color to red
+* @param {object} place - Change this place's map marker to red
+*/
+export function changeMarkerToRed(place) {
+  markers[place.index].changeToRed();
+}
+
+/**
+* @description Changes a marker's color from red to white
+* @param {object} place - Change this place's map marker to white
+*/
 export function changeMarkerToWhite(place) {
   markers[place.index].changeToWhite();
 }
 
+/**
+* @description Displays specified markers on map
+* @param {array} allPlaces - All places
+* @param {array} placesToDisplay - Display these markers on the map
+*/
 export function handleMarkers(allPlaces, placesToDisplay) {
   if (!map) {
     return
@@ -151,88 +205,87 @@ export function handleMarkers(allPlaces, placesToDisplay) {
   const placesNotToDisplay = allPlaces.filter(place => !indexArray.includes(place.index))
   // set the map markers to null for places whose markers should not be displayed
   placesNotToDisplay.forEach(place => markers[place.index].setMap(null))
-
-
+  // display these markers
   placesToDisplay.forEach(place => {
     markers[place.index].setMap(map);
   })
 }
 
-
-
-/** Defines the Marker overlay class. */
+/**
+* @description Defines the Marker overlay class
+* @param {function} hideTopbar - The hideTopbar function from the React Topbar Component
+* @param {function} showTopbar - The showTopbar function from the React Topbar Component
+* from https://developers.google.com/maps/documentation/javascript/examples/overlay-popup
+*/
 function defineMarkerOverlayClass(hideTopbar, showTopbar, map) {
   /**
-   * A customized popup on the map.
-   * @param {!google.maps.LatLng} position
-   * @param {!Element} content
-   * @constructor
-   * @extends {google.maps.OverlayView}
-   */
+  * @constructor A customized Label on the map.
+  * @param {object} place - A place
+  */
+  function LabelOverlay(place) {
+    this.position = place.geometry.location;
+    this.place = place;
 
-   let LabelOverlay = function(place) {
-   this.position = place.geometry.location;
-   this.place = place;
+    let markerLabel = document.createElement('h2');
+    this.markerLabel = markerLabel;
+    markerLabel.textContent = this.place.name;
+    markerLabel.classList.add('marker-label');
 
-   let markerLabel = document.createElement('h2');
-   this.markerLabel = markerLabel;
-   markerLabel.textContent = this.place.name;
-   markerLabel.classList.add('marker-label');
+    // Optionally stop clicks, etc., from bubbling up to the map.
+    this.stopEventPropagation();
+  };
 
-   // Optionally stop clicks, etc., from bubbling up to the map.
-   this.stopEventPropagation();
+  // NOTE: google.maps.OverlayView is only defined once the Maps API has
+  // loaded. That is why Popup is defined inside initMap().
+  LabelOverlay.prototype = Object.create(google.maps.OverlayView.prototype);
 
- };
- // NOTE: google.maps.OverlayView is only defined once the Maps API has
- // loaded. That is why Popup is defined inside initMap().
- LabelOverlay.prototype = Object.create(google.maps.OverlayView.prototype);
+  /** Called when the MarkerOverlay is added to the map. */
+  LabelOverlay.prototype.onAdd = function() {
+    this.getPanes().floatPane.appendChild(this.markerLabel);
+  };
 
- /** Called when the MarkerOverlay is added to the map. */
- LabelOverlay.prototype.onAdd = function() {
-   this.getPanes().floatPane.appendChild(this.markerLabel);
- };
+  /** Called when the MarkerOverlay is removed from the map. */
+  LabelOverlay.prototype.onRemove = function() {
+    if (this.markerLabel.parentElement) {
+      this.markerLabel.parentElement.removeChild(this.markerLabel);
+    }
+  };
 
- /** Called when the MarkerOverlay is removed from the map. */
- LabelOverlay.prototype.onRemove = function() {
-   if (this.markerLabel.parentElement) {
-     this.markerLabel.parentElement.removeChild(this.markerLabel);
-   }
- };
+   /** Called when the MarkerOverlay needs to draw itself. */
+  LabelOverlay.prototype.draw = function() {
+    var divPosition = this.getProjection().fromLatLngToDivPixel(this.position);
+    // Hide the MarkerOverlay when it is far out of view.
+    var display =
+      Math.abs(divPosition.x) < 4000 && Math.abs(divPosition.y) < 4000 ?
+        'block' :
+        'none';
 
- /** Called when the MarkerOverlay needs to draw itself. */
- LabelOverlay.prototype.draw = function() {
-   var divPosition = this.getProjection().fromLatLngToDivPixel(this.position);
-   // Hide the MarkerOverlay when it is far out of view.
-   var display =
-       Math.abs(divPosition.x) < 4000 && Math.abs(divPosition.y) < 4000 ?
-       'block' :
-       'none';
-
-   if (display === 'block') {
-     this.markerLabel.style.left = divPosition.x + 'px';
-     this.markerLabel.style.top = divPosition.y + 'px';
-   }
-   if (this.markerLabel.style.display !== display) {
-     this.markerLabel.style.display = display;
-   }
-
- };
+    if (display === 'block') {
+      this.markerLabel.style.left = divPosition.x + 'px';
+      this.markerLabel.style.top = divPosition.y + 'px';
+    }
+    if (this.markerLabel.style.display !== display) {
+      this.markerLabel.style.display = display;
+    }
+  };
 
  /** Stops clicks/drags from bubbling up to the map. */
- LabelOverlay.prototype.stopEventPropagation = function() {
-   let markerLabel = this.markerLabel;
+  LabelOverlay.prototype.stopEventPropagation = function() {
+    let markerLabel = this.markerLabel;
 
-   ['click', 'dblclick', 'contextmenu', 'wheel', 'mousedown', 'touchstart',
-    'pointerdown']
-       .forEach(function(event) {
-         markerLabel.addEventListener(event, function(e) {
-           e.stopPropagation();
-         });
-       });
- };
+    ['click', 'dblclick', 'contextmenu', 'wheel', 'mousedown', 'touchstart', 'pointerdown'].forEach(function(event) {
+      markerLabel.addEventListener(event, function(e) {
+        e.stopPropagation();
+      });
+    });
+  };
 
-
-    MarkerOverlay = function(place, infoWindow) {
+  /**
+  * @constructor A customized marker on the map.
+  * @param {object} place - A place
+  * @param {object} infoWindow - The google maps infowindow
+  */
+  MarkerOverlay = function(place, infoWindow) {
     this.position = place.geometry.location;
     this.place = place;
     this.infoWindow = infoWindow;
@@ -254,7 +307,6 @@ function defineMarkerOverlayClass(hideTopbar, showTopbar, map) {
       label.setMap(map);
     });
 
-
     this.markerImg.addEventListener('mouseout', function( event ) {
         label.setMap(null);
     });
@@ -268,24 +320,19 @@ function defineMarkerOverlayClass(hideTopbar, showTopbar, map) {
     });
 
     this.markerImg.addEventListener('keypress', function(event) {
-    //  markerLabel.style.opacity = 0;
       populateInfoWindow(place);
       showTopbar(place);
     })
 
     markerImg.addEventListener('click', e => {
-      //this.infoWindow.setContent(`<h2 tabIndex="0" id="infowindow">${this.place.name}</h2>`);
-      //this.infoWindow.setContent(this.el);
-      //this.infoWindow.setPosition(this.position);
-      //this.infoWindow.open(map);
       showTopbar(place);
       populateInfoWindow(place);
     })
 
-
     // Optionally stop clicks, etc., from bubbling up to the map.
     this.stopEventPropagation();
   };
+
   // NOTE: google.maps.OverlayView is only defined once the Maps API has
   // loaded. That is why Popup is defined inside initMap().
   MarkerOverlay.prototype = Object.create(google.maps.OverlayView.prototype);
@@ -320,7 +367,7 @@ function defineMarkerOverlayClass(hideTopbar, showTopbar, map) {
     }
   };
 
-  MarkerOverlay.prototype.animate = function() {
+  MarkerOverlay.prototype.changeColor = function() {
     setTimeout(() => {this.changeToWhite()}, 3000);
     this.changeToRed();
   }
@@ -346,5 +393,4 @@ function defineMarkerOverlayClass(hideTopbar, showTopbar, map) {
           });
         });
   };
-
 }

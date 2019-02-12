@@ -11,7 +11,7 @@ const Map = (props) => {
       aria-label='google map of the los gatos and santa cruz mountains'
       id='map'
       className={props.classes}
-      tabIndex="0">
+      tabIndex='0'>
     </section> )
 }
 

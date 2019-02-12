@@ -21,7 +21,7 @@ class Place extends Component {
   handlePlaceSelection() {
     this.props.hideSidebar()
     let place = this.props.place
-    mapHelper.animateMarker(place)
+    mapHelper.changeMarkerColor(place)
     mapHelper.populateInfoWindow(place)
     this.props.showTopbar(place)
   }
@@ -59,14 +59,14 @@ class Place extends Component {
 
   render() {
     let place = this.props.place
-    let labelString = place.name + " details from google"
+    let labelString = `${place.name} details from google`
     if (place.foursquare)
-      labelString += " and foursquare"
+      labelString += ' and foursquare'
 
     return (
-      <li role="button"
+      <li role='button'
           aria-label={labelString}
-          className="place"
+          className='place'
           key={this.props.index}
           onClick={this.handleClick}
           onKeyDown={this.handleKeyDown}
@@ -74,7 +74,7 @@ class Place extends Component {
           onBlur={this.handleBlur}
           onMouseEnter={this.handleMouseEnter}
           onMouseLeave={this.handleMouseLeave}
-          tabIndex="0">
+          tabIndex='0'>
         <div className='place-name'>{place.name}</div>
         <div className='place-icon place-icon-google'><FontAwesomeIcon icon={['fab', 'google']} /></div>
         {place.foursquare && <span className='place-icon place-icon-foursquare'><FontAwesomeIcon icon={['fab', 'foursquare']} /></span>}

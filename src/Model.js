@@ -1,54 +1,69 @@
 import sortBy from 'sort-by'
-
-// yelp mTqHejL_zR8O_UDls8G_sA client-id
 const foursquareID = 'MHIUGFMI0DATTMMYCPZUPTUPJE0J1FAWFRLMBY3GLMNAGTIN'
 const foursquareSecret = 'ZXYFLE2WKRWPTSRVPNP1TVDZTVIHWD1IXYLCJ0TVYHIAAOXF'
+const radius = 5000
+const location = {lat: 37.1093391, lng: -121.930481}
 
 var foursquare = require('react-foursquare')({
   clientID: foursquareID,
   clientSecret: foursquareSecret
-});
+})
 
-let params = {
-//  "ll": "37.77,-122.41"
-  "ll": "37.1093391,-121.930481",
-  "intent": "browse",
-  "radius": 10000,
-  "categoryId": "4bf58dd8d48988d14b941735"
+/**
+* @description Gets foursquare places; if a google place exists corresponding
+* to that place, the foursquare place data is added to the place data
+* @param {array} googlePlaces - places from google
+* @return {Promise} a promise that resolves with places from google with foursquare data added
+*/
+function getFoursquareData(googlePlaces) {
+  const params = {
+    ll: `${location.lat.toString()},${location.lng.toString()}`,
+    intent: 'browse',
+    radius: radius,
+    categoryId: '4bf58dd8d48988d14b941735'
+  }
+  return foursquare.venues.getVenues(params).then(foursquarePlaces => {
+    if (foursquarePlaces.meta.code === 200) {
+      addFoursquareData(googlePlaces, foursquarePlaces.response.venues)
+      return googlePlaces
+    }
+  })
 }
 
-function getFoursquareData(googlePlaces, location) {
-  // TODO fix params -
-    return foursquare.venues.getVenues(params).then(foursquarePlaces => {
-      if (foursquarePlaces.meta.code === 200) {
-        addFoursquareData(googlePlaces, foursquarePlaces.response.venues)
-        return googlePlaces
-      }
-    })
-}
-
+/**
+* @description Adds foursquare place data to google place data if a google
+* place exists corresponding to the foursquare place
+* @param {array} googlePlaces - places from google
+* @param {array} foursquarePlaces - places from foursquare
+* @param {array} places from google with foursquare data added
+*/
 function addFoursquareData(googlePlaces, foursquarePlaces) {
-  googlePlaces.forEach((place, index) => {
+  googlePlaces.forEach(place => {
     for (let i = 0, found = false; i < foursquarePlaces.length && !found; i++) {
-      if (place.formatted_address.split(', ')[0] === foursquarePlaces[i].location.address) {
+      if ((place.formatted_address.split(', ')[0] === foursquarePlaces[i].location.address) ||
+         (place.name.split(' '))[0] === foursquarePlaces[i].name.split(' ')[0]) {
         found = true
-        //TODO why googlePlaces[index]. and not place. ?
-        googlePlaces[index].foursquare = foursquarePlaces[i]
+        place.foursquare = foursquarePlaces[i]
       }
     }
   })
   return googlePlaces
 }
 
+/**
+* @description Gets place details from google and foursquare
+* @param {object} place - A google place
+* @param {object} service - A google.maps.places.PlacesService object
+* @return {object} A Promise that resolves with google details and foursquare
+* details for a place
+*/
 export function getPlaceDetails(place, service) {
   let promises = []
-  // TODO error handling
   promises.push(getGoogleDetailsPromise(place, service))
   if (place.foursquare) {
-    promises.push(foursquare.venues.getVenue({"venue_id": place.foursquare.id})
+    promises.push(foursquare.venues.getVenue({'venue_id': place.foursquare.id})
       .then(details => {
         if (details.meta.code === 200) {
-          place.foursquareDetails = details.response.venue
           return details.response.venue
         }
       })
@@ -57,6 +72,12 @@ export function getPlaceDetails(place, service) {
   return Promise.all(promises)
 }
 
+/**
+* @description Gets google details for a place
+* @param {object} place - A google place
+* @param {object} service - A google.maps.places.PlacesService object
+* @return {object} A promise that resolves with google place details
+*/
 function getGoogleDetailsPromise(place, service) {
   return new Promise(function(resolve, reject) {
     function callback(details, status) {
@@ -64,19 +85,20 @@ function getGoogleDetailsPromise(place, service) {
       if (status === window.google.maps.places.PlacesServiceStatus.OK) {
         resolve(details)
       } else {
-        reject("Unable to get details")
+        reject('Unable to get details')
       }
     }
-    service.getDetails({"placeId": place.place_id, fields: ['name', 'rating', 'formatted_phone_number', 'opening_hours',
-  'review', 'photos', 'website']}, callback)
+    service.getDetails({'placeId': place.place_id, fields: ['name', 'rating', 'formatted_phone_number', 'opening_hours',
+    'photos', 'website']}, callback)
   })
 }
 
-function addIndexToPlaces(places) {
-  places.forEach((place, index) => {place.index = index})
-}
-
-function getGoogleData(service, location) {
+/**
+* @description Gets google data for wineries in the Los Gatos and Santa Cruz mountains
+* @param {object} service - A google.maps.places.PlacesService object
+* @return {object} A promise that resolves with selected wineries
+*/
+function getGoogleData(service) {
   let placesPromise = new Promise(function(resolve, reject) {
     function callback(googlePlaces, status) {
       if (status === window.google.maps.places.PlacesServiceStatus.OK) {
@@ -93,23 +115,20 @@ function getGoogleData(service, location) {
           gp.name.includes('Bottle Jack')
         )
         googlePlaces.sort(sortBy('name'))
-        addIndexToPlaces(googlePlaces)
+        googlePlaces.forEach((place, index) => {place.index = index})
         resolve(googlePlaces)
       }
     }
-
-     service.textSearch({
-         location: location,
-         radius: 2500,
-         query: 'winery'
-      }, callback)
-  })
+  service.textSearch({location: location, radius: radius, query: 'winery'}, callback)})
   return placesPromise
 }
 
-
-export function initializeData2(service, location) {
-  // TODO add syntax for sideeffects
-    return getGoogleData(service, location)
-    .then(googlePlaces => getFoursquareData(googlePlaces, location))
+/**
+* @description Gets google and foursquare winery eata
+* @param {object} service - A google.maps.places.PlacesService object
+* @return {object} - A promise that resolves with an array of wineries
+*/
+export function initializeData(service) {
+  return getGoogleData(service)
+  .then(googlePlaces => getFoursquareData(googlePlaces))
 }

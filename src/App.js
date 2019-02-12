@@ -11,7 +11,6 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 import { fas } from '@fortawesome/free-solid-svg-icons'
 import { fab } from '@fortawesome/free-brands-svg-icons'
 
-
 library.add(fas, fab)
 
 class App extends Component {
@@ -27,11 +26,6 @@ class App extends Component {
     this.hideDetails = this.hideDetails.bind(this)
     this.handleMapBoundsChange = this.handleMapBoundsChange.bind(this)
     mapHelper.registerCallback(this.handleMapBoundsChange)
-
-  /*  this.clickHandlerShow = this.clickHandlerShow.bind(this)
-    this.clickHandlerClose = this.clickHandlerClose.bind(this)
-    this.keyDownHandlerShow = this.keyDownHandlerShow.bind(this)
-    this.keyDownHandlerHide = this.keyDownHandlerHide.bind(this)*/
 
     this.state = {
       places: [],
@@ -54,7 +48,7 @@ class App extends Component {
   }
 
   componentDidMount() {
-     mapHelper.getGoogleMapsPlaces(this.hideTopbar, this.showTopbar)
+    mapHelper.getGoogleMapsPlaces(this.hideTopbar, this.showTopbar)
       .then(results => {
         this.setState({places: results.places})
       }).catch(error => {
@@ -83,12 +77,11 @@ class App extends Component {
       sidebarClassList: this.state.sidebarClassList.filter(c => c !== 'sidebar-show'),
       renderMenuButton: true
     })
-
   }
 
   showTopbar(place) {
+    // fetch details if haven't done so already
     if (!place.details) {
-      // load image
       mapHelper.getDetails(place).then((details) => {
         place.details = details
         this.setState({
@@ -97,12 +90,11 @@ class App extends Component {
           topbarClassList: this.state.topbarClassList.concat(['topbar-show'])
         })
       }).catch(error => {
-        debugger
         if (!place.details || !place.details[0]) {
           this.setState({selectedPlace: undefined,
-             mapClassList: this.state.mapClassList.filter(c => c !== 'map-reduced-height'),
-             topbarClassList: this.state.topbarClassList.filter(c => c !== 'topbar-show')
-           })
+            mapClassList: this.state.mapClassList.filter(c => c !== 'map-reduced-height'),
+            topbarClassList: this.state.topbarClassList.filter(c => c !== 'topbar-show')
+          })
           window.alert(`Details for ${place.name} are not available at this time.`)
         } else {
           window.alert(`Details for ${place.name} are not available from FOURSQUARE at this time.`)
@@ -121,21 +113,21 @@ class App extends Component {
   hideTopbar() {
     if (this.state.selectedPlace) {
      this.setState({selectedPlace: undefined,
-        mapClassList: this.state.mapClassList.filter(c => c !== 'map-reduced-height'),
-        topbarClassList: this.state.topbarClassList.filter(c => c !== 'topbar-show')
-      })
-      this.hideDetails();
-      mapHelper.closeInfoWindow();
+       mapClassList: this.state.mapClassList.filter(c => c !== 'map-reduced-height'),
+       topbarClassList: this.state.topbarClassList.filter(c => c !== 'topbar-show')
+     })
+     this.hideDetails();
+     mapHelper.closeInfoWindow();
     }
   }
 
   showDetails() {
-      this.setState({
-        renderDetails: true,
-        topbarIcon: ['fas', 'chevron-up'],
-        topbarClickHandler: this.hideDetails,
-        topbarIconAriaLabel: 'collapse details'
-      })
+    this.setState({
+      renderDetails: true,
+      topbarIcon: ['fas', 'chevron-up'],
+      topbarClickHandler: this.hideDetails,
+      topbarIconAriaLabel: 'collapse details'
+    })
   }
 
   hideDetails() {
@@ -155,9 +147,7 @@ class App extends Component {
     mapHelper.closeInfoWindow()
   }
 
-
   render() {
-
     let renderSidebar = false;
     if (this.state.sidebarClassList.includes('sidebar-show') || window.innerWidth > 599)
       renderSidebar = true;
@@ -183,8 +173,7 @@ class App extends Component {
             showTopbar={this.showTopbar}
             updateQuery={this.updateQuery}
             query={this.state.query}
-            totalPlacesCnt={this.state.places.length}
-          />}
+            totalPlacesCnt={this.state.places.length}/>}
           {this.state.selectedPlace && <Topbar
             place={this.state.selectedPlace}
             classes={this.state.topbarClassList.join(' ')}

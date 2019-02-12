@@ -63,10 +63,11 @@ main {
 }
 
 .sidebar-search-cnt {
+  display: inline-block;
   padding: 10px;
-  margin: 20px 30%;
   background-color: #e6e6e6;
   border-radius: 3px;
+  margin: 15px 0;
 }
 
 .sidebar-places-list {
@@ -390,7 +391,7 @@ input::placeholder {
 .details-website a {
   font-family: 'Cinzel Decorative', cursive;
   letter-spacing: 1px;
-  font-size: 1em;
+  font-size: .8em;
 }
 
 .details-foursquare {
