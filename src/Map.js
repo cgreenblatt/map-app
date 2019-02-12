@@ -11,6 +11,9 @@ const Map = (props) => {
       aria-label='google map of the los gatos and santa cruz mountains'
       id='map'
       className={props.classes}
+      onFocus={()=> {
+        props.hideDetails()
+      }}
       tabIndex='0'>
     </section> )
 }
@@ -18,7 +21,8 @@ const Map = (props) => {
 Map.propTypes = {
   classes: PropTypes.string.isRequired,
   allPlaces: PropTypes.array.isRequired,
-  showingPlaces: PropTypes.array.isRequired
+  showingPlaces: PropTypes.array.isRequired,
+  hideDetails: PropTypes.func.isRequired
 }
 
 export default Map

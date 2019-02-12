@@ -12,7 +12,7 @@ const Details = function(props) {
     <section role='alert' className='details' >
       <div className='details-content-container'>
         {place.photos[0] && <DetailsImage place={place} />}
-        <DetailsAddrPhoneWeb place={place} hideDetails={props.hideDetails}/>
+        <DetailsAddrPhoneWeb place={place}/>
         {place.details[0].opening_hours && place.details[0].opening_hours.weekday_text &&
         <section aria-label={`${place.name} operating hours`} className='details-hours' tabIndex='0'>
           {place.details[0].opening_hours.weekday_text.map((wd,index) =>

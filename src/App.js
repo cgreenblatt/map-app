@@ -182,7 +182,11 @@ class App extends Component {
             icon={this.state.topbarIcon}
             iconAriaLabel={this.state.topbarIconAriaLabel}/>}
           {this.state.renderDetails && <Details place={this.state.selectedPlace} hideDetails={this.hideDetails}/>}
-          <Map classes={this.state.mapClassList.join(' ')} allPlaces={this.state.places} showingPlaces={showingPlaces}/>
+          <Map
+            classes={this.state.mapClassList.join(' ')}
+            allPlaces={this.state.places}
+            showingPlaces={showingPlaces}
+            hideDetails={this.hideDetails}/>
         </main>
       </div>
     )
