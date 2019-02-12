@@ -26,7 +26,7 @@ class Topbar extends React.Component {
 
   render() {
     return (
-        <section role="alert" className={this.props.classes}>
+        <section aria-live='polite' className={this.props.classes}>
           <h2 className="topbar-h2">{this.props.place.name}</h2>
           <div className="topbar-button-container">
             <button
