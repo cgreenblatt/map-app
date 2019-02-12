@@ -77,7 +77,7 @@ export function populateInfoWindow(place) {
   }
 
   infoWindow.setContent(
-      `<div role="alert" tabIndex="0">
+      `<div tabIndex="0">
         ${nameStr}
         ${addrStr}
       <div>`)
