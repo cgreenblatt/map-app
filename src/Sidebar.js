@@ -48,9 +48,8 @@ class Sidebar extends React.Component {
 
   render() {
     const {places, classes, hideSidebar, showTopbar, updateQuery, query, totalPlacesCnt} = this.props
-    let role = window.innerWidth < 600 ? "alert" : ""
     return (
-      <section role={role} className={classes} >
+      <section className={classes} >
         <div className="sidebar-content">
         <div className='sidebar-top-grid'>
           <button
@@ -71,12 +70,11 @@ class Sidebar extends React.Component {
           value={query}
           onChange={(event) => updateQuery(event.target.value)}
         />
-        <div className='sidebar-search-cnt'>{this.props.places.length} of {totalPlacesCnt}</div>
+        <div role='alert' className='sidebar-search-cnt'>{this.props.places.length} of {totalPlacesCnt}</div>
 
         <ul
           className="sidebar-places-list"
           onKeyDown={this.handleKeyDownUL}>
-
           { places.map(function(place, index) {
               return <Place
                 key={index}
