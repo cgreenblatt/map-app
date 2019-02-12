@@ -70,7 +70,7 @@ class Sidebar extends React.Component {
           value={query}
           onChange={(event) => updateQuery(event.target.value)}
         />
-        <div role='alert' className='sidebar-search-cnt'>{this.props.places.length} of {totalPlacesCnt}</div>
+        <div aria-live='polite' className='sidebar-search-cnt'>{this.props.places.length} of {totalPlacesCnt}</div>
 
         <ul
           className="sidebar-places-list"
