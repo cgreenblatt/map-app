@@ -6,7 +6,7 @@ import DetailsAddrPhoneWeb from './DetailsAddrPhoneWeb'
 
 const Details = function(props) {
 
-  let place = props.place;
+  let place = props.place
 
   return (
     <section role='alert' className='details' >

@@ -166,7 +166,7 @@ h3 {
 }
 
 input[type=text] {
-  padding: 10px 5px;
+  padding: 10px 30px;
   background-color: white;
   background-image: url('icons/search.svg');
   background-position: right;

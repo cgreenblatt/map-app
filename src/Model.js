@@ -13,7 +13,7 @@ var foursquare = require('react-foursquare')({
 * @description Gets foursquare places; if a google place exists corresponding
 * to that place, the foursquare place data is added to the place data
 * @param {array} googlePlaces - places from google
-* @return {Promise} a promise that resolves with places from google with foursquare data added
+* @return {object} a promise that resolves with an array of places from google with foursquare data added
 */
 function getFoursquareData(googlePlaces) {
   const params = {
@@ -79,9 +79,8 @@ export function getPlaceDetails(place, service) {
 * @return {object} A promise that resolves with google place details
 */
 function getGoogleDetailsPromise(place, service) {
-  return new Promise(function(resolve, reject) {
+  return new Promise((resolve, reject) => {
     function callback(details, status) {
-      // TODO google reference - howto deal with it
       if (status === window.google.maps.places.PlacesServiceStatus.OK) {
         resolve(details)
       } else {
@@ -99,7 +98,7 @@ function getGoogleDetailsPromise(place, service) {
 * @return {object} A promise that resolves with selected wineries
 */
 function getGoogleData(service) {
-  let placesPromise = new Promise(function(resolve, reject) {
+  let placesPromise = new Promise((resolve, reject) => {
     function callback(googlePlaces, status) {
       if (status === window.google.maps.places.PlacesServiceStatus.OK) {
         googlePlaces = googlePlaces.filter(gp =>

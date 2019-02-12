@@ -1,14 +1,13 @@
 import * as model from './Model'
 
-let map;
-let google;
-let service;
-let googleMapsPromise;
-let MarkerOverlay;
-let infoWindow;
-let markers;
-let googleMaps;
-let boundsCallback;
+let map
+let google
+let service
+let googleMapsPromise
+let MarkerOverlay
+let infoWindow
+let markers
+let boundsCallback
 
 /**
 * @description Filters places within the map's bounds
@@ -16,9 +15,9 @@ let boundsCallback;
 * @return {array} Places within the map's bounds
 */
 export function getPlacesInBounds(places) {
-  if (!map) return [];
-  let bounds = map.getBounds();
-  return places.filter(place => bounds.contains(place.geometry.location));
+  if (!map) return []
+  let bounds = map.getBounds()
+  return places.filter(place => bounds.contains(place.geometry.location))
 }
 
 /**
@@ -32,16 +31,16 @@ export function getGoogleMapsPromise() {
     // Create a new function to call resolve
       window.resolveGoogleMapsPromise = () => {
         // Resolve the promise
-        resolve(window.google);
+        resolve(window.google)
       }
-    });
+    })
 
     // start load of google maps api
-    const script = document.createElement('script');
-    const API = 'AIzaSyABZfonyfQfBxa63C2F-1T2P_yvmt9pbzE';
+    const script = document.createElement('script')
+    const API = 'AIzaSyABZfonyfQfBxa63C2F-1T2P_yvmt9pbzE'
     script.src = `https://maps.googleapis.com/maps/api/js?key=${API}&libraries=geometry,places&callback=resolveGoogleMapsPromise`;
-    script.async = true;
-    document.body.appendChild(script);
+    script.async = true
+    document.body.appendChild(script)
   }
 
   // Return a promise for the Google Maps API
@@ -53,7 +52,7 @@ export function getGoogleMapsPromise() {
 * @param {function} callback - Function to be called when a bounds change event occurs
 */
 export function registerCallback(callback) {
-  boundsCallback = callback;
+  boundsCallback = callback
 }
 
 /**
@@ -70,11 +69,11 @@ export function getDetails(place) {
 * @param {object} place - Infowindow populated with this place's data
 */
 export function populateInfoWindow(place) {
-  let nameStr = `<h2 id="info-window-title">${place.name}</h2>`;
-  let addrStr = '';
+  let nameStr = `<h2 id="info-window-title">${place.name}</h2>`
+  let addrStr = ''
   if (place.formatted_address) {
-    let addressArray = place.formatted_address.split(', ');
-    addrStr = `<h3>${addressArray[0]}</h3><h3>${addressArray[1]}, ${addressArray[2]}</h3>`;
+    let addressArray = place.formatted_address.split(', ')
+    addrStr = `<h3>${addressArray[0]}</h3><h3>${addressArray[1]}, ${addressArray[2]}</h3>`
   }
 
   infoWindow.setContent(
@@ -82,15 +81,15 @@ export function populateInfoWindow(place) {
         ${nameStr}
         ${addrStr}
       <div>`)
-  infoWindow.setPosition(place.geometry.location);
-  infoWindow.open(map);
+  infoWindow.setPosition(place.geometry.location)
+  infoWindow.open(map)
 } // end populateInfoWindow
 
 /**
 * @description Closes the google maps infowindow
 */
 export function closeInfoWindow() {
-  infoWindow.close();
+  infoWindow.close()
 }
 
 /**
@@ -98,57 +97,50 @@ export function closeInfoWindow() {
 * @param {array} places - Extend google map to include these places
 */
 function setMapBounds(places) {
-  let bounds = new google.maps.LatLngBounds();
+  let bounds = new google.maps.LatLngBounds()
   places.forEach(place => {
-    bounds.extend(place.geometry.location);
-  });
-  map.fitBounds(bounds);
+    bounds.extend(place.geometry.location)
+  })
+  map.fitBounds(bounds)
 }
 
 /**
-* @description Gets the google maps API and initializes the map, service,
-* and infowindow objects
-* @return {object} A promise that resolves to the google maps api
+* @description Initializes the map, service, and infowindow objects
+* @return {object} A promise that resolves when google maps vars are initialized
 */
-function getGoogleMaps() {
-  if (googleMaps) {
-    Promise.resolve(googleMaps);
-  } else {
+function initializeGoogleMapsVars() {
       return getGoogleMapsPromise().then(googleAPI => {
-      google = googleAPI;
+      google = googleAPI
       map = new google.maps.Map(document.getElementById('map'), {
         mapTypeId: google.maps.MapTypeId.ROADMAP,
         streetViewControl: false,
         mapTypeControl: false
-      });
+      })
       google.maps.event.addListener(map, 'bounds_changed',
-      function() {
-         boundsCallback();
-      });
-      service = new google.maps.places.PlacesService(map);
-      infoWindow = new google.maps.InfoWindow();
+        () => {boundsCallback();});
+      service = new google.maps.places.PlacesService(map)
+      infoWindow = new google.maps.InfoWindow()
       infoWindow.setOptions({pixelOffset: (new google.maps.Size(0,-24))});
-      infoWindow.open(map);
-    });
+      infoWindow.open(map)
+    })
   }
-}
 
 /**
 * @description Gets the google places, creates the google map marker
 * custom overlays, sets the map's bounds, and returns the places
 * @param {function} hideTopbar - a function to hide the topbar React component
 * @param {function} showTopbar - a function to show the topbar React component
-* @return {array} An array of places
+* @return {object} A promise that resolves with an array of places
 */
 export function getGoogleMapsPlaces(hideTopbar, showTopbar) {
-  return getGoogleMaps().then(() => {
-    defineMarkerOverlayClass(hideTopbar, showTopbar, map);
-    return model.initializeData(service).then(function(places) {
-      createMarkers(places, infoWindow);
-      setMapBounds(places);
-      return {places: places};
-    });
-  });
+  return initializeGoogleMapsVars().then(() => {
+    defineMarkerOverlayClass(hideTopbar, showTopbar, map)
+    return model.initializeData(service).then(places => {
+      createMarkers(places, infoWindow)
+      setMapBounds(places)
+      return {places: places}
+    })
+  })
 }
 
 /**
@@ -160,9 +152,9 @@ all markers in the marker array
 function createMarkers(places, infoWindow) {
   // create overlay markers
   markers = places.map(place => {
-    let marker = new MarkerOverlay(place, infoWindow);
-    marker.setMap(map);
-    return marker;
+    let marker = new MarkerOverlay(place, infoWindow)
+    marker.setMap(map)
+    return marker
   })
 }
 
@@ -171,7 +163,7 @@ function createMarkers(places, infoWindow) {
 * @param {object} place - Change this place's marker color
 */
 export function changeMarkerColor(place) {
-  markers[place.index].changeColor();
+  markers[place.index].changeColor()
 }
 
 /**
@@ -179,7 +171,7 @@ export function changeMarkerColor(place) {
 * @param {object} place - Change this place's map marker to red
 */
 export function changeMarkerToRed(place) {
-  markers[place.index].changeToRed();
+  markers[place.index].changeToRed()
 }
 
 /**
@@ -187,7 +179,7 @@ export function changeMarkerToRed(place) {
 * @param {object} place - Change this place's map marker to white
 */
 export function changeMarkerToWhite(place) {
-  markers[place.index].changeToWhite();
+  markers[place.index].changeToWhite()
 }
 
 /**
@@ -207,7 +199,7 @@ export function handleMarkers(allPlaces, placesToDisplay) {
   placesNotToDisplay.forEach(place => markers[place.index].setMap(null))
   // display these markers
   placesToDisplay.forEach(place => {
-    markers[place.index].setMap(map);
+    markers[place.index].setMap(map)
   })
 }
 
@@ -223,17 +215,17 @@ function defineMarkerOverlayClass(hideTopbar, showTopbar, map) {
   * @param {object} place - A place
   */
   function LabelOverlay(place) {
-    this.position = place.geometry.location;
-    this.place = place;
+    this.position = place.geometry.location
+    this.place = place
 
-    let markerLabel = document.createElement('h2');
+    let markerLabel = document.createElement('h2')
     this.markerLabel = markerLabel;
-    markerLabel.textContent = this.place.name;
-    markerLabel.classList.add('marker-label');
+    markerLabel.textContent = this.place.name
+    markerLabel.classList.add('marker-label')
 
     // Optionally stop clicks, etc., from bubbling up to the map.
-    this.stopEventPropagation();
-  };
+    this.stopEventPropagation()
+  }
 
   // NOTE: google.maps.OverlayView is only defined once the Maps API has
   // loaded. That is why Popup is defined inside initMap().
@@ -241,15 +233,15 @@ function defineMarkerOverlayClass(hideTopbar, showTopbar, map) {
 
   /** Called when the MarkerOverlay is added to the map. */
   LabelOverlay.prototype.onAdd = function() {
-    this.getPanes().floatPane.appendChild(this.markerLabel);
-  };
+    this.getPanes().floatPane.appendChild(this.markerLabel)
+  }
 
   /** Called when the MarkerOverlay is removed from the map. */
   LabelOverlay.prototype.onRemove = function() {
     if (this.markerLabel.parentElement) {
       this.markerLabel.parentElement.removeChild(this.markerLabel);
     }
-  };
+  }
 
    /** Called when the MarkerOverlay needs to draw itself. */
   LabelOverlay.prototype.draw = function() {
@@ -261,11 +253,11 @@ function defineMarkerOverlayClass(hideTopbar, showTopbar, map) {
         'none';
 
     if (display === 'block') {
-      this.markerLabel.style.left = divPosition.x + 'px';
-      this.markerLabel.style.top = divPosition.y + 'px';
+      this.markerLabel.style.left = divPosition.x + 'px'
+      this.markerLabel.style.top = divPosition.y + 'px'
     }
     if (this.markerLabel.style.display !== display) {
-      this.markerLabel.style.display = display;
+      this.markerLabel.style.display = display
     }
   };
 
@@ -274,11 +266,11 @@ function defineMarkerOverlayClass(hideTopbar, showTopbar, map) {
     let markerLabel = this.markerLabel;
 
     ['click', 'dblclick', 'contextmenu', 'wheel', 'mousedown', 'touchstart', 'pointerdown'].forEach(function(event) {
-      markerLabel.addEventListener(event, function(e) {
-        e.stopPropagation();
-      });
-    });
-  };
+      markerLabel.addEventListener(event, (e) => {
+        e.stopPropagation()
+      })
+    })
+  }
 
   /**
   * @constructor A customized marker on the map.
@@ -286,72 +278,69 @@ function defineMarkerOverlayClass(hideTopbar, showTopbar, map) {
   * @param {object} infoWindow - The google maps infowindow
   */
   MarkerOverlay = function(place, infoWindow) {
-    this.position = place.geometry.location;
-    this.place = place;
-    this.infoWindow = infoWindow;
-    this.label =  new LabelOverlay(place);
+    this.position = place.geometry.location
+    this.place = place
+    this.infoWindow = infoWindow
+    this.label =  new LabelOverlay(place)
     let label = this.label
-    let markerImg = document.createElement('img');
-    this.markerImg = markerImg;
+    let markerImg = document.createElement('img')
+    this.markerImg = markerImg
     // from https://stackoverflow.com/questions/7095574/google-maps-api-3-custom-marker-color-for-default-dot-marker/7686977#7686977
-    markerImg.setAttribute('src', 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|ffffff');
-    //markerImg.setAttribute('src', 'http://image.flaticon.com/icons/svg/252/252025.svg');
-    //markerImg.setAttribute('src', 'map-marker.svg');
-
-    markerImg.classList.add('marker-img');
-    markerImg.setAttribute('tabIndex' ,'0');
+    markerImg.setAttribute('src', 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|ffffff')
+    markerImg.classList.add('marker-img')
+    markerImg.setAttribute('tabIndex' ,'0')
     markerImg.setAttribute('role', 'button')
     markerImg.setAttribute('alt', this.place.name + ' map marker')
 
-    this.markerImg.addEventListener('mouseenter', function( event ) {
-      label.setMap(map);
-    });
+    this.markerImg.addEventListener('mouseenter', event => {
+      label.setMap(map)
+    })
 
-    this.markerImg.addEventListener('mouseout', function( event ) {
-        label.setMap(null);
-    });
+    this.markerImg.addEventListener('mouseout', event => {
+        label.setMap(null)
+    })
 
-    this.markerImg.addEventListener('focus', function ( event ) {
-      label.setMap(map);
+    this.markerImg.addEventListener('focus', event =>  {
+      label.setMap(map)
     })
 
     this.markerImg.addEventListener('blur', event => {
-      label.setMap(null);
-    });
-
-    this.markerImg.addEventListener('keypress', function(event) {
-      populateInfoWindow(place);
-      showTopbar(place);
+      label.setMap(null)
     })
 
-    markerImg.addEventListener('click', e => {
-      showTopbar(place);
-      populateInfoWindow(place);
+    this.markerImg.addEventListener('keypress', event => {
+      populateInfoWindow(place)
+      showTopbar(place)
+    })
+
+    markerImg.addEventListener('click', event => {
+      showTopbar(place)
+      populateInfoWindow(place)
     })
 
     // Optionally stop clicks, etc., from bubbling up to the map.
-    this.stopEventPropagation();
+    this.stopEventPropagation()
   };
 
   // NOTE: google.maps.OverlayView is only defined once the Maps API has
   // loaded. That is why Popup is defined inside initMap().
-  MarkerOverlay.prototype = Object.create(google.maps.OverlayView.prototype);
+  MarkerOverlay.prototype = Object.create(google.maps.OverlayView.prototype)
 
   /** Called when the MarkerOverlay is added to the map. */
   MarkerOverlay.prototype.onAdd = function() {
-    this.getPanes().overlayMouseTarget.appendChild(this.markerImg);
-  };
+    this.getPanes().overlayMouseTarget.appendChild(this.markerImg)
+  }
 
   /** Called when the MarkerOverlay is removed from the map. */
   MarkerOverlay.prototype.onRemove = function() {
     if (this.markerImg.parentElement) {
-      this.markerImg.parentElement.removeChild(this.markerImg);
+      this.markerImg.parentElement.removeChild(this.markerImg)
     }
-  };
+  }
 
   /** Called when the MarkerOverlay needs to draw itself. */
   MarkerOverlay.prototype.draw = function() {
-    var divPosition = this.getProjection().fromLatLngToDivPixel(this.position);
+    var divPosition = this.getProjection().fromLatLngToDivPixel(this.position)
     // Hide the MarkerOverlay when it is far out of view.
     var display =
         Math.abs(divPosition.x) < 4000 && Math.abs(divPosition.y) < 4000 ?
@@ -359,38 +348,37 @@ function defineMarkerOverlayClass(hideTopbar, showTopbar, map) {
         'none';
 
     if (display === 'block') {
-      this.markerImg.style.left = divPosition.x + 'px';
-      this.markerImg.style.top = divPosition.y + 'px';
+      this.markerImg.style.left = divPosition.x + 'px'
+      this.markerImg.style.top = divPosition.y + 'px'
     }
     if (this.markerImg.style.display !== display) {
-      this.markerImg.style.display = display;
+      this.markerImg.style.display = display
     }
   };
 
   MarkerOverlay.prototype.changeColor = function() {
-    setTimeout(() => {this.changeToWhite()}, 3000);
-    this.changeToRed();
+    setTimeout(() => {this.changeToWhite()}, 3000)
+    this.changeToRed()
   }
 
   MarkerOverlay.prototype.changeToRed = function() {
-    this.markerImg.setAttribute('src', 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|e60000');
+    this.markerImg.setAttribute('src', 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|e60000')
   }
 
   MarkerOverlay.prototype.changeToWhite = function() {
-    this.markerImg.setAttribute('src', 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|ffffff');
+    this.markerImg.setAttribute('src', 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|ffffff')
   }
 
   /** Stops clicks/drags from bubbling up to the map. */
   MarkerOverlay.prototype.stopEventPropagation = function() {
     let markerImg = this.markerImg;
-    //markerContainer.style.cursor = 'auto';
 
     ['click', 'dblclick', 'contextmenu', 'wheel', 'mousedown', 'touchstart',
      'pointerdown']
-        .forEach(function(event) {
-          markerImg.addEventListener(event, function(e) {
-            e.stopPropagation();
-          });
-        });
-  };
+        .forEach(event => {
+          markerImg.addEventListener(event, e => {
+            e.stopPropagation()
+          })
+        })
+  }
 }
