@@ -13,6 +13,7 @@ const Map = (props) => {
       className={props.classes}
       onFocus={()=> {
         props.hideDetails()
+        props.hideSidebar()
       }}
       tabIndex='0'>
     </section> )
@@ -22,7 +23,8 @@ Map.propTypes = {
   classes: PropTypes.string.isRequired,
   allPlaces: PropTypes.array.isRequired,
   showingPlaces: PropTypes.array.isRequired,
-  hideDetails: PropTypes.func.isRequired
+  hideDetails: PropTypes.func.isRequired,
+  hideSidebar: PropTypes.func.isRequired
 }
 
 export default Map

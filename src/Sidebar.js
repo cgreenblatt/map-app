@@ -75,13 +75,12 @@ class Sidebar extends React.Component {
         <ul
           className="sidebar-places-list"
           onKeyDown={this.handleKeyDownUL}>
-          { places.map(function(place, index) {
+          {places.map(function(place, index) {
               return <Place
                 key={index}
                 place={place}
                 hideSidebar={hideSidebar}
                 showTopbar={showTopbar}
-                lastPlace={index === places.length - 1}
               />
             })
           }

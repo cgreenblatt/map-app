@@ -186,7 +186,8 @@ class App extends Component {
             classes={this.state.mapClassList.join(' ')}
             allPlaces={this.state.places}
             showingPlaces={showingPlaces}
-            hideDetails={this.hideDetails}/>
+            hideDetails={this.hideDetails}
+            hideSidebar={this.hideSidebar}/>
         </main>
       </div>
     )

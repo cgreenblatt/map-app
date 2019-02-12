@@ -31,11 +31,6 @@ class Place extends Component {
   }
 
   handleKeyDown(e) {
-    if (e.key === 'Tab') {
-      if (this.props.lastPlace) {
-        this.props.hideSidebar()
-      }
-    }
     if (e.key === 'Enter') {
       this.handlePlaceSelection()
     }
@@ -86,8 +81,7 @@ class Place extends Component {
 Place.propTypes = {
   place: PropTypes.object.isRequired,
   hideSidebar: PropTypes.func.isRequired,
-  showTopbar: PropTypes.func.isRequired,
-  lastPlace: PropTypes.bool.isRequired
+  showTopbar: PropTypes.func.isRequired
 }
 
 export default Place;
