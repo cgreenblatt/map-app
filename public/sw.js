@@ -1,6 +1,6 @@
 'use strict';
 
-let cacheName = 'wine-v2';
+let cacheName = 'wine-v1';
 
 /*
  * On install event, cache known needed resources during install event
@@ -9,23 +9,28 @@ self.addEventListener('install', function (event) {
     event.waitUntil(caches.open(cacheName).then(function (cache) {
     return cache.addAll([
         'index.html',
+        'foursquare.svg',
+        'powered_by_google_on_white.png',
+        'src/Alert.js',
         'src/App.css',
         'src/App.js',
+        'src/Details.js',
+        'src/DetailsAddrPhoneWeb.js',
+        'src/DetailsFoursquare.js',
+        'src/DetailsImage.js',
         'src/GoogleMapsHelper.js',
         'src/Header.js',
         'src/index.css',
         'src/index.js',
         'src/Map.js',
-        'src/Menu.js',
         'src/Model.js',
         'src/Place.js',
         'src/Sidebar.js',
+        'src/Topbar.js',
         "https://fonts.googleapis.com/css?family=Cinzel+Decorative|Lato"
     ]);
   }));
 });
-
-
 
 /*
  * On activate event, delete old caches and claim clients of previous service worker to accomplish
