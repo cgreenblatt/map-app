@@ -10,6 +10,14 @@ let markers
 let boundsCallback
 
 /**
+* @description Sets focus on map marker for specified place
+* @param {object} place - Set focus on map marker for this place
+*/
+export function setMapMarkerFocus(place) {
+  markers[place.index].setFocus()
+}
+
+/**
 * @description Filters places within the map's bounds
 * @param {array} places - All places
 * @return {array} Places within the map's bounds
@@ -367,6 +375,10 @@ function defineMarkerOverlayClass(hideTopbar, showTopbar, map) {
 
   MarkerOverlay.prototype.changeToWhite = function() {
     this.markerImg.setAttribute('src', 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|ffffff')
+  }
+
+  MarkerOverlay.prototype.setFocus = function() {
+    this.markerImg.focus()
   }
 
   /** Stops clicks/drags from bubbling up to the map. */

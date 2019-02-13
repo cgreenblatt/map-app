@@ -26,7 +26,6 @@ class Sidebar extends React.Component {
     this.focusTextInput()
   }
 
-
   focusTextInput() {
     this.textInput.current.focus();
   }

@@ -5,6 +5,7 @@ import Map from './Map'
 import Header from './Header'
 import Topbar from './Topbar'
 import Details from './Details'
+import Alert from './Alert'
 import * as mapHelper from './GoogleMapsHelper'
 import escapeRegExp from 'escape-string-regexp'
 import { library } from '@fortawesome/fontawesome-svg-core'
@@ -25,6 +26,7 @@ class App extends Component {
     this.showDetails = this.showDetails.bind(this)
     this.hideDetails = this.hideDetails.bind(this)
     this.handleMapBoundsChange = this.handleMapBoundsChange.bind(this)
+    this.hideAlert = this.hideAlert.bind(this)
     mapHelper.registerCallback(this.handleMapBoundsChange)
 
     this.state = {
@@ -39,7 +41,8 @@ class App extends Component {
       renderDetails: false,
       topbarIcon: ['fas', 'chevron-down'],
       topbarClickHandler: this.showDetails,
-      topbarIconAriaLabel: 'expand details'
+      topbarIconAriaLabel: 'expand details',
+      renderAlert: false
     }
   }
 
@@ -52,8 +55,13 @@ class App extends Component {
       .then(results => {
         this.setState({places: results.places})
       }).catch(error => {
-        window.alert("The network may be down. Winery data is not available at this time.")
+        this.setState({renderAlert: true})
       })
+   }
+
+   hideAlert() {
+     this.setState({renderAlert: false})
+     mapHelper.setMapMarkerFocus(this.state.selectedPlace)
    }
 
    handleMapBoundsChange() {
@@ -81,6 +89,7 @@ class App extends Component {
 
   showTopbar(place) {
     // fetch details if haven't done so already
+
     if (!place.details) {
       mapHelper.getDetails(place).then((details) => {
         place.details = details
@@ -91,13 +100,13 @@ class App extends Component {
         })
       }).catch(error => {
         if (!place.details || !place.details[0]) {
-          this.setState({selectedPlace: undefined,
+          this.setState({selectedPlace: place,
             mapClassList: this.state.mapClassList.filter(c => c !== 'map-reduced-height'),
             topbarClassList: this.state.topbarClassList.filter(c => c !== 'topbar-show')
           })
-          window.alert(`Details for ${place.name} are not available at this time.`)
+          this.setState({renderAlert: true})
         } else {
-          window.alert(`Details for ${place.name} are not available from FOURSQUARE at this time.`)
+          this.setState({renderAlert: true})
         }
       })
     } else {
@@ -166,6 +175,7 @@ class App extends Component {
       <div>
         <Header showSidebar={this.showSidebar} renderMenuButton={this.state.renderMenuButton}/>
         <main className='main' >
+          {this.state.renderAlert && <Alert hideAlert={this.hideAlert}/>}
           {renderSidebar && <Sidebar
             places={showingPlaces}
             classes={this.state.sidebarClassList.join(' ')}
@@ -174,7 +184,7 @@ class App extends Component {
             updateQuery={this.updateQuery}
             query={this.state.query}
             totalPlacesCnt={this.state.places.length}/>}
-          {this.state.selectedPlace && <Topbar
+          {this.state.selectedPlace && !this.state.renderAlert && <Topbar
             place={this.state.selectedPlace}
             classes={this.state.topbarClassList.join(' ')}
             chevronClickHandler={this.state.topbarClickHandler}
