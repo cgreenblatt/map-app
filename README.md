@@ -1,4 +1,4 @@
-# Winery Map application
+# Winery Map Application
 
 ## Table of Contents
 
@@ -11,29 +11,32 @@
 
 ## Intro
 
-This is a map application for Wineries in the Los Gatos and Santa Cruz Mountains area.
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This is a map application for wineries in the Los Gatos and Santa Cruz Mountains area.
 
 ## Downloading
 
 To download this application, enter the following command on the command line in the directory
 where you would like to install it:
 
-git clone []
+git clone https://github.com/cgreenblatt/map-app.git
 
-After the above command completes, change your directory to the [] and run the
+After the above command completes, change your directory to map-app and run the
 following command on the command line:
 
 npm install
 
 ## Running
-To run the application enter the following command on the command line in the []
+To run the application enter the following command on the command line in the map-app
 directory
+
+npm start
+
+Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 ## Instructions
 
-All clickable screen areas can be reached via the tab key and can be activated
-by pressing the enter key, including map markers.
+All clickable screen items can be reached via the tab key and can be activated
+by pressing the enter key, including the map markers.
 
 All wineries are displayed initially on the map.  A larger screen will also
 display the side bar.  A smaller screen will display a menu icon that when
@@ -47,7 +50,10 @@ winery in the list will cause the associated map marker to turn red.  Clicking
 on a winery in the list will cause the associated map marker to turn red for
 three seconds, an info window to display near the map marker, and will display
 the top bar with buttons for either expanding the winery details or removing
-the top bar.
+the top bar.  Clicking on a winery in a small screen will cause the side bar to
+close.  A winery name is followed by a Google icon indicating google data
+is available and a FOURSQUARE icon if foursquare data is available for that
+winery on the details screen.
 
 Hovering over a map marker causes the name of the winery to be displayed next to
 the map marker.  Clicking on a map marker causes the top bar to be displayed.
@@ -59,16 +65,10 @@ Clicking on either the google map zoom buttons will filter the
 winery list in the side bar to contain the wineries within the
 current map boundaries that satisfy any specified search criteria.
 
+## Contributing
 
+No pull requests will be accepted
 
-## Available Scripts
+## Details
 
-In the project directory, you can run:
-
-### `npm start`
-
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
