@@ -1,7 +1,7 @@
 import sortBy from 'sort-by'
 const foursquareID = 'MHIUGFMI0DATTMMYCPZUPTUPJE0J1FAWFRLMBY3GLMNAGTIN'
 const foursquareSecret = 'ZXYFLE2WKRWPTSRVPNP1TVDZTVIHWD1IXYLCJ0TVYHIAAOXF'
-const radius = 5000
+const radius = 6000
 const location = {lat: 37.1093391, lng: -121.930481}
 
 var foursquare = require('react-foursquare')({
@@ -111,7 +111,8 @@ function getGoogleData(service) {
           gp.name.includes('MJA') ||
           gp.name.includes('Testa') ||
           gp.name.includes('Grant') ||
-          gp.name.includes('Bottle Jack')
+          gp.name.includes('Bottle Jack') ||
+          gp.name.includes('David Bruce')
         )
         googlePlaces.sort(sortBy('name'))
         googlePlaces.forEach((place, index) => {place.index = index})

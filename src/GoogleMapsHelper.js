@@ -83,12 +83,15 @@ export function populateInfoWindow(place) {
     let addressArray = place.formatted_address.split(', ')
     addrStr = `<h3>${addressArray[0]}</h3><h3>${addressArray[1]}, ${addressArray[2]}</h3>`
   }
+  let ratingStr = place.rating
 
   infoWindow.setContent(
       `<div tabIndex="0">
         ${nameStr}
         ${addrStr}
-      <div>`)
+      <div>
+      <div>${place.rating}
+      </div>`)
   infoWindow.setPosition(place.geometry.location)
   infoWindow.open(map)
 } // end populateInfoWindow
@@ -114,23 +117,22 @@ function setMapBounds(places) {
 
 /**
 * @description Initializes the map, service, and infowindow objects
-* @return {object} A promise that resolves when google maps vars are initialized
+* @return {object} Google maps service object
 */
-function initializeGoogleMapsVars() {
-      return getGoogleMapsPromise().then(googleAPI => {
-      google = googleAPI
-      map = new google.maps.Map(document.getElementById('map'), {
-        mapTypeId: google.maps.MapTypeId.ROADMAP,
-        streetViewControl: false,
-        mapTypeControl: false
-      })
-      google.maps.event.addListener(map, 'bounds_changed',
-        () => {boundsCallback();});
-      service = new google.maps.places.PlacesService(map)
-      infoWindow = new google.maps.InfoWindow()
-      infoWindow.setOptions({pixelOffset: (new google.maps.Size(0,-24))});
+function initializeGoogleMapsVars(googleAPI) {
+        google = googleAPI
+        map = new google.maps.Map(document.getElementById('map'), {
+          mapTypeId: google.maps.MapTypeId.ROADMAP,
+          streetViewControl: false,
+          mapTypeControl: false
+        })
+        google.maps.event.addListener(map, 'bounds_changed',
+          () => {boundsCallback();});
+        service = new google.maps.places.PlacesService(map)
+        infoWindow = new google.maps.InfoWindow()
+        infoWindow.setOptions({pixelOffset: (new google.maps.Size(0,-24))});
       infoWindow.open(map)
-    })
+      return service;
   }
 
 /**
@@ -141,14 +143,20 @@ function initializeGoogleMapsVars() {
 * @return {object} A promise that resolves with an array of places
 */
 export function getGoogleMapsPlaces(hideTopbar, showTopbar) {
-  return initializeGoogleMapsVars().then(() => {
-    defineMarkerOverlayClass(hideTopbar, showTopbar, map)
-    return model.initializeData(service).then(places => {
-      createMarkers(places, infoWindow)
-      setMapBounds(places)
-      return {places: places}
+
+  return getGoogleMapsPromise()
+    .then(googleAPI => {
+      return initializeGoogleMapsVars(googleAPI);
     })
-  })
+    .then(googleMapsService => {
+      return model.initializeData(googleMapsService)
+    })
+    .then(googlePlaces => {
+      defineMarkerOverlayClass(hideTopbar, showTopbar, map)
+      createMarkers(googlePlaces, infoWindow);
+      setMapBounds(googlePlaces);
+      return {places: googlePlaces};
+    });
 }
 
 /**
