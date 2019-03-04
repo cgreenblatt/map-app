@@ -87,8 +87,8 @@ function getGoogleDetailsPromise(place, service) {
         reject('Unable to get details')
       }
     }
-    service.getDetails({'placeId': place.place_id, fields: ['name', 'rating', 'formatted_phone_number', 'opening_hours',
-    'photos', 'website']}, callback)
+    service.getDetails({'placeId': place.place_id, fields: ['rating', 'formatted_phone_number', 'opening_hours',
+     'website']}, callback)
   })
 }
 
