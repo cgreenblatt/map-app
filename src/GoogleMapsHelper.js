@@ -1,4 +1,5 @@
 import * as model from './Model'
+import { API } from './src/api-keys'
 
 let map
 let google
@@ -45,7 +46,7 @@ export function getGoogleMapsPromise() {
 
     // start load of google maps api
     const script = document.createElement('script')
-    const API = 'AIzaSyABZfonyfQfBxa63C2F-1T2P_yvmt9pbzE'
+  
     script.src = `https://maps.googleapis.com/maps/api/js?key=${API}&libraries=geometry,places&callback=resolveGoogleMapsPromise`;
     script.async = true
     document.body.appendChild(script)
