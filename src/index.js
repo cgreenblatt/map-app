@@ -4,7 +4,7 @@ import './index.css';
 import App from './App';
 
 ReactDOM.render(<App/>, document.getElementById('root'));
-if ('serviceWorker' in navigator) {
+/*if ('serviceWorker' in navigator) {
   window.addEventListener('load', function() {
     navigator.serviceWorker.register('/sw.js').then(function(registration) {
       // Registration was successful
@@ -14,4 +14,4 @@ if ('serviceWorker' in navigator) {
       console.log('ServiceWorker registration failed: ', err);
     });
   });
-}
+}*/
