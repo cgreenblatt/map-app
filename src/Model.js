@@ -87,8 +87,8 @@ function getGoogleDetailsPromise(place, service) {
         reject('Unable to get details')
       }
     }
-    service.getDetails({'placeId': place.place_id, fields: ['rating', 'formatted_phone_number', 'opening_hours',
-     'website']}, callback)
+    service.getDetails({'placeId': place.place_id, fields:
+    ['formatted_phone_number', 'opening_hours', 'website']}, callback)
   })
 }
 
@@ -124,7 +124,7 @@ function getGoogleData(service) {
 }
 
 /**
-* @description Gets google and foursquare winery eata
+* @description Gets google and foursquare winery data
 * @param {object} service - A google.maps.places.PlacesService object
 * @return {object} - A promise that resolves with an array of wineries
 */
