@@ -12,6 +12,7 @@
 ## Intro
 
 This is a map application for wineries in the Los Gatos and Santa Cruz Mountains area.
+This application requires a google api key.
 
 ## Downloading
 
@@ -26,6 +27,13 @@ following command on the command line:
 npm install
 
 ## Running
+
+In order to run this application, you will need to create a file in the src 
+directory called api-key.js.  In this file you will need to define and export 
+your google api key.    
+
+    export const API = "your google api key here"
+
 To run the application enter the following command on the command line in the map-app
 directory
 
